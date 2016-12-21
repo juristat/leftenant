@@ -1,3 +1,4 @@
+/* eslint-disable no-console, comma-dangle */
 const util = require('util');
 const Duplex = require('stream').Duplex;
 
@@ -32,5 +33,12 @@ Leftenant.make = (...args) => {
 };
 
 util.inherits(Leftenant, Duplex);
+
+console.error(`
+/~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+| leftenant, a placeholder utility, is enabled; this message is a reminder.
+| 1st parent module = ${module.parent.filename || '(REPL?)'}
+\\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`);
 
 module.exports = Leftenant;
