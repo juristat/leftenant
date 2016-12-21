@@ -1,6 +1,7 @@
 /* eslint-disable no-console, comma-dangle */
 const util = require('util');
-const Duplex = require('stream').Duplex;
+const { IncomingMessage, ServerResponse } = require('http');
+const { Duplex } = require('stream');
 
 function Leftenant(...args) {
   if (!(this instanceof Leftenant)) {
@@ -8,9 +9,19 @@ function Leftenant(...args) {
   }
 
   if (args.length > 0) {
-    const last = args[args.length - 1];
-    if (typeof last === 'function') {
-      last(null, {}); // callback support!
+    const callback = args[args.length - 1];
+
+    if (typeof callback === 'function') {
+      const ctx = args[0];
+      const [req, res] = args;
+      const isKoa = ctx && ctx.req instanceof IncomingMessage && ctx.res instanceof ServerResponse;
+      const isConnect = req instanceof IncomingMessage && res instanceof ServerResponse;
+
+      if (isKoa || isConnect) {
+        callback();
+      } else {
+        callback(null, {});
+      }
     }
   }
 }

@@ -1,22 +1,25 @@
 /* eslint-env node, mocha */
+/* eslint-disable no-unused-expressions */
+const http = require('http');
 const expect = require('chai').expect;
 const EventEmitter = require('events').EventEmitter;
 const Duplex = require('stream').Duplex;
 const leftenant = require('./index.js');
 
-function testThing(thing) {
+describe('leftenant', () => {
   describe('function call support', () => {
-    it('returns an object without throwing', () => expect(thing).to.be.an('object'));
+    it('returns an object without throwing', () => expect(leftenant()).to.be.an('object'));
   });
 
   describe('Promise/thenable/async support', () => {
-    it('has a .then', () => expect(thing.then).to.be.a('function'));
-    it('has a .catch', () => expect(thing.catch).to.be.a('function'));
-    it('resolves with an object', async () => expect(await thing).to.be.an('object'));
+    const instance = leftenant();
+    it('has a .then', () => expect(instance.then).to.be.a('function'));
+    it('has a .catch', () => expect(instance.catch).to.be.a('function'));
+    it('resolves with an object', async () => expect(await instance).to.be.an('object'));
   });
 
   describe('callback support', () => {
-    it('calls back w/o error with an object', (done) => {
+    it('calls back with an object', (done) => {
       leftenant((err, result) => {
         expect(result).to.be.an('object');
         done(err);
@@ -25,30 +28,50 @@ function testThing(thing) {
   });
 
   describe('EventEmitter support', () => {
-    it('is an EventEmitter', () => expect(thing).to.be.an.instanceOf(EventEmitter));
+    it('is an EventEmitter', () => expect(leftenant()).to.be.an.instanceOf(EventEmitter));
   });
 
   describe('stream.Duplex support', () => {
-    it('is a stream.Duplex', () => expect(thing).to.be.an.instanceOf(Duplex));
+    it('is a stream.Duplex', () => expect(leftenant()).to.be.an.instanceOf(Duplex));
   });
-}
 
-describe('leftenant', () => {
-  testThing(leftenant());
+  describe('Connect-style middleware support', () => {
+    it('calls the middleware with no args', (done) => {
+      const req = new http.IncomingMessage();
+      const res = new http.ServerResponse(req);
+      leftenant(req, res, (...args) => {
+        expect(args.length).to.be.empty;
+        done();
+      });
+    });
+  });
+
+  describe('Koa-style middleware support', () => {
+    it('calls the middleware with no args', (done) => {
+      const req = new http.IncomingMessage();
+      const res = new http.ServerResponse(req);
+      leftenant({ req, res }, (...args) => {
+        expect(args.length).to.be.empty;
+        done();
+      });
+    });
+  });
 });
 
 describe('leftenant.make()', () => {
   describe('object form', () => {
-    const made = leftenant.make({ foo: true, bar: false, baz: true });
-    testThing(made.foo);
-    testThing(made.bar());
-    testThing(made.baz);
+    it('creates object correctly', () => {
+      const made = leftenant.make({ foo: true, bar: false });
+      expect(made.foo).to.be.an.instanceOf(leftenant);
+      expect(made.bar).to.not.be.an.instanceOf(leftenant);
+    });
   });
 
   describe('strings form', () => {
-    const made = leftenant.make('foo', 'bar', 'baz');
-    testThing(made.foo());
-    testThing(made.bar());
-    testThing(made.baz());
+    it('creates object correctly', () => {
+      const made = leftenant.make('foo', 'bar');
+      expect(made.foo).to.not.be.an.instanceOf(leftenant);
+      expect(made.bar).to.not.be.an.instanceOf(leftenant);
+    });
   });
 });
