@@ -1,6 +1,6 @@
 {
   "name": "leftenant",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Lit. \"place holder\"",
   "main": "index.js",
   "scripts": {
