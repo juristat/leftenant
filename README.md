@@ -12,7 +12,7 @@ You can say `leftenant.make(...keys)` to get an object where all the specified k
 ## Stupid package.json tricks
 
 ```json
-"dependencies": {
+"devDependencies": {
     "module-of-your-dreams": "juristat-oss/leftenant"
 }
 ```
