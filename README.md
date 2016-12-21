@@ -2,6 +2,13 @@
 
 Lit. "placeholder". I quickly and quietly succeed at any task you give me. Just call me. I can be almost anything to anybody, but not everything to everybody. That's ok, call me over and over if you need.
 
+## "almost anything"
+Synchronous function, callback function, Promise/awaitable function (as a thenable), EventEmitter, Duplex stream. Call me with or without `new`. Sorry, leftenant can't be used naked; it must *always* be called to get a new instance.
+
+If leftenant's last argument is a function, it'll be treated as a callback.
+
+You can say `leftenant.make(...keys)` to get an object where all the specified keys are `leftenant` itself. Or, say `leftenant.make({key1: boolean, key2: boolean, ...})`; then you'll get an object with those keys, but if the key's boolean value was truthy, it'll be an instantiated `leftenant()` instead of just `leftentant`.
+
 ## Stupid package.json tricks
 
 ```json
@@ -22,12 +29,7 @@ const dreamModule = require('module-of-your-dreams');
 }
 ```
 
-## "almost anything"
-Synchronous function, callback function, Promise/awaitable function (as a thenable), EventEmitter, Duplex stream. Call me with or without `new`. Sorry, leftenant can't be used naked; it must *always* be called to get a new instance.
-
-If leftenant's last argument is a function, it'll be treated as a callback.
-
-You can say `leftenant.make(...keys)` to get an object where all the specified keys are `leftenant` itself. Or, say `leftenant.make({key1: boolean, key2: boolean, ...})`; then you'll get an object with those keys, but if the key's boolean value was truthy, it'll be an instantiated `leftenant()` instead of just `leftentant`.
+This is especially handy if your dream module is of the form `await dreamModule();` and you don't care if it returns anything.
 
 ## Legal
 
