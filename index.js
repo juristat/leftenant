@@ -17,6 +17,20 @@ function Leftenant(...args) {
 Leftenant.prototype.then = (resolve) => { resolve({}); };
 Leftenant.prototype.catch = () => {};
 
+Leftenant.make = (...args) => {
+  const result = {};
+  args.forEach((arg) => {
+    if (typeof arg === 'string') {
+      result[arg] = Leftenant;
+    } else if (typeof arg === 'object') {
+      Object.keys(arg).forEach((key) => {
+        result[key] = arg[key] ? Leftenant() : Leftenant;
+      });
+    }
+  });
+  return result;
+};
+
 util.inherits(Leftenant, Duplex);
 
 module.exports = Leftenant;

@@ -4,16 +4,15 @@ const EventEmitter = require('events').EventEmitter;
 const Duplex = require('stream').Duplex;
 const leftenant = require('./index.js');
 
-
-describe('leftenant', () => {
+function testThing(thing) {
   describe('function call support', () => {
-    it('returns an object without throwing', () => expect(leftenant()).to.be.an('object'));
+    it('returns an object without throwing', () => expect(thing).to.be.an('object'));
   });
 
   describe('Promise/thenable/async support', () => {
-    it('has a .then', () => expect(leftenant().then).to.be.a('function'));
-    it('has a .catch', () => expect(leftenant().catch).to.be.a('function'));
-    it('resolves with an object', async () => expect(await leftenant()).to.be.an('object'));
+    it('has a .then', () => expect(thing.then).to.be.a('function'));
+    it('has a .catch', () => expect(thing.catch).to.be.a('function'));
+    it('resolves with an object', async () => expect(await thing).to.be.an('object'));
   });
 
   describe('callback support', () => {
@@ -26,10 +25,30 @@ describe('leftenant', () => {
   });
 
   describe('EventEmitter support', () => {
-    it('is an EventEmitter', () => expect(leftenant()).to.be.an.instanceOf(EventEmitter));
+    it('is an EventEmitter', () => expect(thing).to.be.an.instanceOf(EventEmitter));
   });
 
   describe('stream.Duplex support', () => {
-    it('is a stream.Duplex', () => expect(leftenant()).to.be.an.instanceOf(Duplex));
+    it('is a stream.Duplex', () => expect(thing).to.be.an.instanceOf(Duplex));
+  });
+}
+
+describe('leftenant', () => {
+  testThing(leftenant());
+});
+
+describe('leftenant.make()', () => {
+  describe('object form', () => {
+    const made = leftenant.make({ foo: true, bar: false, baz: true });
+    testThing(made.foo);
+    testThing(made.bar());
+    testThing(made.baz);
+  });
+
+  describe('strings form', () => {
+    const made = leftenant.make('foo', 'bar', 'baz');
+    testThing(made.foo());
+    testThing(made.bar());
+    testThing(made.baz());
   });
 });
