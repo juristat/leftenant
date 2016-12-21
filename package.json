@@ -1,0 +1,31 @@
+{
+  "name": "leftenant",
+  "version": "1.0.0",
+  "description": "Lit. \"place holder\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "eslint . && mocha --harmony test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/juristat-oss/leftenant.git"
+  },
+  "keywords": [
+    "placeholder",
+    "dummy",
+    "module"
+  ],
+  "author": "Ben Chociej <ben.chociej@juristat.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/juristat-oss/leftenant/issues"
+  },
+  "homepage": "https://github.com/juristat-oss/leftenant#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^3.12.2",
+    "eslint-config-airbnb-base": "^11.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "mocha": "^3.2.0"
+  }
+}
